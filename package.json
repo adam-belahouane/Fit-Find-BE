@@ -7,8 +7,7 @@
     "test": "jest",
     "watch": "jest --watchAll",
     "dev": "ts-node-dev ./src",
-    "start": "node ./src/index",
-    "build": "node ./src"
+    "start": "node ./src/index"
   },
   "keywords": [],
   "author": "",
