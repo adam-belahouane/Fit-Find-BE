@@ -4,7 +4,9 @@ import { JWTAuthMiddleware, JWTAuthMiddlewarePro } from "../../middlewares/JWTAu
 import { ProUserModel } from "../../model/professionalUser";
 import { ProgramModel } from "../../model/programs";
 import { UserModel } from "../../model/users";
+import dotenv from "dotenv";
 
+dotenv.config();
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
 const programsRouter = express.Router();
 

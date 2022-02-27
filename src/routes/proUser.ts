@@ -9,6 +9,10 @@ const { CloudinaryStorage } = require("multer-storage-cloudinary");
 import createError from "http-errors";
 import { JWTAuthMiddlewarePro } from "../middlewares/JWTAuthMiddleware";
 
+import dotenv from "dotenv";
+
+dotenv.config();
+
 const{CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET} = process.env 
 
 cloudinary.config({

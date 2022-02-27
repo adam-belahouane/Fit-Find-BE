@@ -18,6 +18,8 @@ const JWTAuthMiddleware_1 = require("../../middlewares/JWTAuthMiddleware");
 const professionalUser_1 = require("../../model/professionalUser");
 const programs_1 = require("../../model/programs");
 const users_1 = require("../../model/users");
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 const programsRouter = express_1.default.Router();
 programsRouter.post("/payForProgram", JWTAuthMiddleware_1.JWTAuthMiddleware, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
