@@ -21,6 +21,8 @@ const cloudinary_1 = require("cloudinary");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const http_errors_1 = __importDefault(require("http-errors"));
 const JWTAuthMiddleware_1 = require("../middlewares/JWTAuthMiddleware");
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } = process.env;
 cloudinary_1.v2.config({
     cloud_name: CLOUDINARY_CLOUD_NAME,
