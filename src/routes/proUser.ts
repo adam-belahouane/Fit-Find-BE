@@ -42,9 +42,13 @@ proUsersRouter.route("/login").post(async (req, res) => {
 
       res.cookie("accessToken", token.accessToken, {
         httpOnly: true,
+        sameSite: "none",
+        secure: true
       });
       res.cookie("refreshToken", token.refreshToken, {
         httpOnly: true,
+        sameSite: "none",
+        secure: true
       });
 
       res.send("success");
