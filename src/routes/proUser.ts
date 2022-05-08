@@ -193,6 +193,30 @@ proUsersRouter.get(
 );
 
 proUsersRouter.post(
+  "/profilePic/me",
+  JWTAuthMiddlewarePro,
+  multer({ storage: cloudinaryStorage }).single("avatar"),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const user = await ProUserModel.findById(req.user._id);
+      if (user) {
+        user.avatar = req.file!.path;
+
+        await user.save();
+
+        res.status(203).send({ success: true, data: user });
+      } else {
+        res
+          .status(404)
+          .send({ success: false, message: "Experience not found" });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+proUsersRouter.post(
   "/profilePic/:userId",
   multer({ storage: cloudinaryStorage }).single("avatar"),
   async (req: Request, res: Response, next: NextFunction) => {
