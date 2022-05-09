@@ -41,11 +41,7 @@ export const JWTAuthMiddlewarePro: RequestHandler = async (req, res, next) => {
     try {
       const token = req.cookies.accessToken
 
-      console.log(token);
-
       const decodedToken = await verifyJWT(token);
-
-      console.log(decodedToken)
 
       const user = await ProUserModel.findById(decodedToken._id);
 

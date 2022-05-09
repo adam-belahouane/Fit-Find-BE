@@ -24,6 +24,8 @@ usersRouter.route("/login").post(async (req, res) => {
       });
       res.cookie("refreshToken", token.refreshToken, {
         httpOnly: true,
+        sameSite: "none",
+        secure: true
       });
 
       res.send("success");

@@ -1,5 +1,5 @@
 import express, { NextFunction, Router } from "express";
-import { JWTAuth, verifyRefreshToken } from "../auth/tools";
+import { JWTAuth, verifyRefreshTokenPro } from "../auth/tools";
 import { Request, Response } from "express";
 import { ProUserModel } from "../model/professionalUser";
 import multer from "multer";
@@ -88,7 +88,7 @@ proUsersRouter.post("/refreshToken", async (req, res, next) => {
     if (!req.cookies.refreshToken)
       next(createError(400, "Refresh Token not provided"));
     else {
-      const token = await verifyRefreshToken(req.cookies.refreshToken);
+      const token = await verifyRefreshTokenPro(req.cookies.refreshToken);
       res.cookie("accessToken", token.accessToken, {
         httpOnly: true,
         sameSite: "none",

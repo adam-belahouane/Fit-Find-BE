@@ -3,6 +3,7 @@ import IUser from "../interfaces/IUser";
 import { Document } from "mongoose";
 import {UserModel} from "../model/users"
 import IUserPro from "../interfaces/IUserPro"
+import { ProUserModel } from "../model/professionalUser";
 
 type JWTToken = {
   _id: string;
@@ -24,7 +25,7 @@ const generateJWTToken = (payload: JWTToken) =>
     jwt.sign(
       payload,
       process.env.JWT_SECRET!,
-      { expiresIn: "1h" },
+      { expiresIn: "10 mins" },
       (err, token) => {
         if (err) reject(err);
         else resolve(token);
@@ -67,6 +68,22 @@ export const verifyRefreshToken = async (currentRefreshToken: string) => {
   const user = await UserModel.findById(decodedRefreshToken._id);
 
   if (!user) throw new Error("User not found!");
+
+  if (user.refreshToken && user.refreshToken === currentRefreshToken) {
+    const { accessToken, refreshToken } = await JWTAuth(user);
+
+    return { accessToken, refreshToken };
+  } else {
+    throw new Error("Token not valid!");
+  }
+};
+
+export const verifyRefreshTokenPro = async (currentRefreshToken: string) => {
+  const decodedRefreshToken: any = await verifyRefreshJWT(currentRefreshToken);
+
+  const user = await ProUserModel.findById(decodedRefreshToken._id);
+
+  if (!user) throw new Error("ProUser not found!");
 
   if (user.refreshToken && user.refreshToken === currentRefreshToken) {
     const { accessToken, refreshToken } = await JWTAuth(user);
