@@ -13,12 +13,13 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const{CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET} = process.env 
+const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } =
+  process.env;
 
 cloudinary.config({
   cloud_name: CLOUDINARY_CLOUD_NAME,
   api_key: CLOUDINARY_API_KEY,
-  api_secret: CLOUDINARY_API_SECRET
+  api_secret: CLOUDINARY_API_SECRET,
 });
 
 const cloudinaryStorage = new CloudinaryStorage({
@@ -43,12 +44,12 @@ proUsersRouter.route("/login").post(async (req, res) => {
       res.cookie("accessToken", token.accessToken, {
         httpOnly: true,
         sameSite: "none",
-        secure: true
+        secure: true,
       });
       res.cookie("refreshToken", token.refreshToken, {
         httpOnly: true,
         sameSite: "none",
-        secure: true
+        secure: true,
       });
 
       res.send("success");
@@ -136,19 +137,22 @@ proUsersRouter
   .route("/me")
   .get(JWTAuthMiddlewarePro, async (req, res, next) => {
     try {
-      const getUser = await ProUserModel.findById(req.user._id)
-        .populate([{path: "programs",
-      populate: {path: 'prouser'}}, {path: "reviews.user"}])
+      const getUser = await ProUserModel.findById(req.user._id).populate([
+        { path: "programs", populate: { path: "prouser" } },
+        { path: "reviews.user" },
+      ]);
 
-      res.send(getUser)
+      res.send(getUser);
     } catch (error) {
       next(error);
     }
   })
   .put(JWTAuthMiddlewarePro, async (req, res, next) => {
     try {
-      const user = await ProUserModel.findByIdAndUpdate(req.user._id, {...req.body});
-      res.status(200).send({success: true, user: user})
+      const user = await ProUserModel.findByIdAndUpdate(req.user._id, {
+        ...req.body,
+      });
+      res.status(200).send({ success: true, user: user });
     } catch (error) {
       next(error);
     }
@@ -164,9 +168,12 @@ proUsersRouter
   .route("/getAll")
   .get(async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const allProUsers = await ProUserModel.find().populate([{
-        path: "reviews.user",
-      },{ path: "programs"}]);
+      const allProUsers = await ProUserModel.find().populate([
+        {
+          path: "reviews.user",
+        },
+        { path: "programs" },
+      ]);
 
       res.send(allProUsers);
     } catch (error) {
@@ -178,9 +185,12 @@ proUsersRouter.get(
   "/getProUser/:userId",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user = await ProUserModel.findById(req.params.userId).populate([{
-        path: "reviews.user",
-      },{ path: "programs"}]);
+      const user = await ProUserModel.findById(req.params.userId).populate([
+        {
+          path: "reviews.user",
+        },
+        { path: "programs" },
+      ]);
       if (user) {
         res.send(user);
       } else {
@@ -235,6 +245,25 @@ proUsersRouter.post(
       }
     } catch (error) {
       next(error);
+    }
+  }
+);
+
+proUsersRouter.put(
+  "/headercolor",
+  JWTAuthMiddlewarePro,
+  async (req, res, next) => {
+    try {
+      const user = await ProUserModel.findById(req.user._id);
+      if (user) {
+        user.headercolor = req.body;
+        await user.save();
+        res.status(203).send({ success: true, data: user });
+      } else {
+        res.status(404).send({ success: false, message: "User not found" });
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 );

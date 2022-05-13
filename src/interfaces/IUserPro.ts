@@ -16,6 +16,7 @@ export default interface IUserPro {
     refreshToken: string;
     bio: string
     jobrole: string
+    headercolor: string;
     post: IPost
     overallreview: number
     reviews: [IReview]

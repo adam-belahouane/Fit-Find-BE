@@ -24,6 +24,7 @@ const UserProSchema = new Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, required: true, enum: ["pro", "admin"] },
+    headercolor: {type: String, default:'#4385f5'},
     refreshToken: { type: String },
     bio: { type: String },
     jobrole: { type: String },
