@@ -17,6 +17,7 @@ const UserSchema = new Schema<IUser>(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     avatar: { type: String },
+    headercolor: { type: String},
     role: { type: String, required: true, enum: ["normal", "admin"] },
     refreshToken: { type: String },
     programs: [

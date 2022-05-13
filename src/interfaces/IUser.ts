@@ -9,6 +9,7 @@ export default interface IUser {
     email: string;
     password: string;
     avatar: string;
+    headercolor: string;
     role: string;
     refreshToken: string;
     programs: [Types.ObjectId]

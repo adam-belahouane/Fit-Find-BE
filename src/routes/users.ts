@@ -184,4 +184,23 @@ usersRouter
     }
   );
 
+  usersRouter.put(
+    "/headercolor",
+    JWTAuthMiddleware,
+    async (req, res, next) => {
+      try {
+        const user = await UserModel.findById(req.user._id);
+        if (user) {
+          user.headercolor = req.body.color;
+          await user.save();
+          res.status(203).send({ success: true, data: user });
+        } else {
+          res.status(404).send({ success: false, message: "User not found" });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  );
+
 export default usersRouter;

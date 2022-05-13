@@ -256,7 +256,7 @@ proUsersRouter.put(
     try {
       const user = await ProUserModel.findById(req.user._id);
       if (user) {
-        user.headercolor = req.body;
+        user.headercolor = req.body.color;
         await user.save();
         res.status(203).send({ success: true, data: user });
       } else {
