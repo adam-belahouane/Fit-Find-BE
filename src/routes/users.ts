@@ -4,6 +4,27 @@ import { JWTAuth, verifyRefreshToken } from "../auth/tools";
 import { JWTAuthMiddleware } from "../middlewares/JWTAuthMiddleware";
 import { Request, Response } from "express";
 import createError from "http-errors";
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+import { v2 as cloudinary } from "cloudinary";
+import dotenv from "dotenv";
+import multer from "multer";
+
+dotenv.config();
+
+const{CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET} = process.env 
+
+cloudinary.config({
+  cloud_name: CLOUDINARY_CLOUD_NAME,
+  api_key: CLOUDINARY_API_KEY,
+  api_secret: CLOUDINARY_API_SECRET
+});
+
+const cloudinaryStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "FitFind-Profile-Images",
+  },
+});
 
 const usersRouter = express.Router();
 
@@ -138,5 +159,29 @@ usersRouter
       next(error);
     }
   });
+
+  usersRouter.post(
+    "/profilePic/me",
+    JWTAuthMiddleware,
+    multer({ storage: cloudinaryStorage }).single("avatar"),
+    async (req: Request, res: Response, next) => {
+      try {
+        const user = await UserModel.findById(req.user._id);
+        if (user) {
+          user.avatar = req.file!.path;
+  
+          await user.save();
+  
+          res.status(203).send({ success: true, data: user });
+        } else {
+          res
+            .status(404)
+            .send({ success: false, message: "Experience not found" });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  );
 
 export default usersRouter;
