@@ -2,12 +2,17 @@ import express from "express";
 import { UserModel } from "../model/users";
 import { JWTAuth, verifyRefreshToken } from "../auth/tools";
 import { JWTAuthMiddleware } from "../middlewares/JWTAuthMiddleware";
-import { Request, Response } from "express";
+import { Response, Request } from "express";
 import createError from "http-errors";
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
 import multer from "multer";
+import IUser from "../interfaces/IUser";
+
+interface RequestType extends Request {
+  user: any
+}
 
 dotenv.config();
 
@@ -106,9 +111,9 @@ usersRouter.post("/refreshToken", async (req, res, next) => {
   }
 });
 
-usersRouter.post("/logout", JWTAuthMiddleware, async (req, res, next) => {
+usersRouter.post("/logout", JWTAuthMiddleware, async (req: any, res, next) => {
   try {
-    const user = req.user;
+    const user = req!.user;
     user.refreshToken = "";
     await user.save();
     res.cookie("accessToken", "", {
@@ -132,7 +137,7 @@ usersRouter.post("/logout", JWTAuthMiddleware, async (req, res, next) => {
 
 usersRouter
   .route("/me")
-  .get(JWTAuthMiddleware, async (req, res, next) => {
+  .get(JWTAuthMiddleware, async (req: any, res, next) => {
     try {
       const getUser = await UserModel.findById(req.user._id)
         .populate({path: "programs",
@@ -143,7 +148,7 @@ usersRouter
       next(error);
     }
   })
-  .put(JWTAuthMiddleware, async (req, res, next) => {
+  .put(JWTAuthMiddleware, async (req: Request, res, next) => {
     try {
       const user = await UserModel.findByIdAndUpdate(req.user._id, {
         ...req.body,
@@ -164,7 +169,7 @@ usersRouter
     "/profilePic/me",
     JWTAuthMiddleware,
     multer({ storage: cloudinaryStorage }).single("avatar"),
-    async (req: Request, res: Response, next) => {
+    async (req: any, res: Response, next) => {
       try {
         const user = await UserModel.findById(req.user._id);
         if (user) {
@@ -187,7 +192,7 @@ usersRouter
   usersRouter.put(
     "/headercolor",
     JWTAuthMiddleware,
-    async (req, res, next) => {
+    async (req: any, res, next) => {
       try {
         const user = await UserModel.findById(req.user._id);
         if (user) {

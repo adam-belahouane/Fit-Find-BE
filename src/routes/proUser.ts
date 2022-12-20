@@ -109,7 +109,7 @@ proUsersRouter.post("/refreshToken", async (req, res, next) => {
   }
 });
 
-proUsersRouter.post("/logout", JWTAuthMiddlewarePro, async (req, res, next) => {
+proUsersRouter.post("/logout", JWTAuthMiddlewarePro, async (req: any, res, next) => {
   try {
     const user = req.user;
     user.refreshToken = "";
@@ -135,7 +135,7 @@ proUsersRouter.post("/logout", JWTAuthMiddlewarePro, async (req, res, next) => {
 
 proUsersRouter
   .route("/me")
-  .get(JWTAuthMiddlewarePro, async (req, res, next) => {
+  .get(JWTAuthMiddlewarePro, async (req: any, res, next) => {
     try {
       const getUser = await ProUserModel.findById(req.user._id).populate([
         { path: "programs", populate: { path: "prouser" } },
@@ -147,7 +147,7 @@ proUsersRouter
       next(error);
     }
   })
-  .put(JWTAuthMiddlewarePro, async (req, res, next) => {
+  .put(JWTAuthMiddlewarePro, async (req: any, res, next) => {
     try {
       const user = await ProUserModel.findByIdAndUpdate(req.user._id, {
         ...req.body,
@@ -166,7 +166,7 @@ proUsersRouter
 
 proUsersRouter
   .route("/getAll")
-  .get(async (req: Request, res: Response, next: NextFunction) => {
+  .get(async (req: any, res: Response, next: NextFunction) => {
     try {
       const allProUsers = await ProUserModel.find().populate([
         {
@@ -183,7 +183,7 @@ proUsersRouter
 
 proUsersRouter.get(
   "/getProUser/:userId",
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: any, res: Response, next: NextFunction) => {
     try {
       const user = await ProUserModel.findById(req.params.userId).populate([
         {
@@ -206,7 +206,7 @@ proUsersRouter.post(
   "/profilePic/me",
   JWTAuthMiddlewarePro,
   multer({ storage: cloudinaryStorage }).single("avatar"),
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: any, res: Response, next: NextFunction) => {
     try {
       const user = await ProUserModel.findById(req.user._id);
       if (user) {
@@ -229,7 +229,7 @@ proUsersRouter.post(
 proUsersRouter.post(
   "/profilePic/:userId",
   multer({ storage: cloudinaryStorage }).single("avatar"),
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: any, res: Response, next: NextFunction) => {
     try {
       const user = await ProUserModel.findById(req.params.userId);
       if (user) {
@@ -252,7 +252,7 @@ proUsersRouter.post(
 proUsersRouter.put(
   "/headercolor",
   JWTAuthMiddlewarePro,
-  async (req, res, next) => {
+  async (req: any, res, next) => {
     try {
       const user = await ProUserModel.findById(req.user._id);
       if (user) {

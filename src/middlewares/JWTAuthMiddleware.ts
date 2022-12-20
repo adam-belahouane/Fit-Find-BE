@@ -4,7 +4,7 @@ import { ProUserModel } from "../model/professionalUser";
 import { verifyJWT } from "../auth/tools";
 import { RequestHandler } from "express";
 
-export const JWTAuthMiddleware: RequestHandler = async (req, res, next) => {
+export const JWTAuthMiddleware: RequestHandler = async (req: any, res, next) => {
   if (!req.cookies.accessToken) {
     res.status(401).send({
       success: false,
@@ -31,7 +31,7 @@ export const JWTAuthMiddleware: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const JWTAuthMiddlewarePro: RequestHandler = async (req, res, next) => {
+export const JWTAuthMiddlewarePro: RequestHandler = async (req: any, res, next) => {
   if (!req.cookies.accessToken) {
     res.status(401).send({
       success: false,
@@ -46,7 +46,7 @@ export const JWTAuthMiddlewarePro: RequestHandler = async (req, res, next) => {
       const user = await ProUserModel.findById(decodedToken._id);
 
       if (user) {
-        req.user = user;
+        // req.user = user;
 
         next();
       } else {

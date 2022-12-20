@@ -30,7 +30,7 @@ const postsRouter = express.Router();
 postsRouter.post(
   "/newPosts",
   JWTAuthMiddlewarePro,
-  async (req: Request, res, next) => {
+  async (req: any, res, next) => {
     try {
       const newPost = await ProUserModel.findByIdAndUpdate(
         req.user._id,
@@ -50,7 +50,7 @@ postsRouter.post(
 
 postsRouter
   .route("/post/:postId")
-  .delete(JWTAuthMiddlewarePro, async (req, res, next) => {
+  .delete(JWTAuthMiddlewarePro, async (req: any, res, next) => {
     try {
       const deletePost = await ProUserModel.findByIdAndUpdate(
         req.user._id,
@@ -72,7 +72,7 @@ postsRouter.post(
   "/newPost/img/:postId",
   JWTAuthMiddlewarePro,
   multer({ storage: cloudinaryStorage }).single("post"),
-  async (req, res, next) => {
+  async (req: any, res, next) => {
     try {
       const post = await ProUserModel.updateOne(
         {

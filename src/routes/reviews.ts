@@ -8,7 +8,7 @@ const reviewsRouter = express.Router();
 reviewsRouter.post(
   "/newReview/:proUserId",
   JWTAuthMiddleware,
-  async (req, res, next) => {
+  async (req: any, res, next) => {
     try {
       const newReview = await ProUserModel.findByIdAndUpdate(
         req.params.proUserId,

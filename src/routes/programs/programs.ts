@@ -36,7 +36,7 @@ programsRouter.post("/payForProgram", JWTAuthMiddleware, async (req, res, next) 
     }
 })
 
-programsRouter.post("/addToUser/:productId", JWTAuthMiddleware, async( req, res, next) => {
+programsRouter.post("/addToUser/:productId", JWTAuthMiddleware, async( req: any, res, next) => {
     try {
         const getUser = await UserModel.findById(req.user.id)
         getUser?.programs.push( new mongoose.Types.ObjectId(req.params.productId) )
@@ -52,7 +52,7 @@ programsRouter.post("/addToUser/:productId", JWTAuthMiddleware, async( req, res,
 programsRouter.post(
   "/newProgram",
   JWTAuthMiddlewarePro,
-  async (req, res, next) => {
+  async (req: any, res, next) => {
     try {
       const newProgram = new ProgramModel({
         ...req.body,
