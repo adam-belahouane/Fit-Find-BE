@@ -3,9 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "pre-commit": [
+    "ts.check",
+    "build",
+    "add-build"
+  ],
   "scripts": {
     "postinstall": "tsc",
-    "build": "tsc",
+    "build": "rimraf dist && tsc",
+    "ts.check": "tsc --project tsconfig.json",
+    "add-build": "git add dist",
     "test": "jest",
     "watch": "jest --watchAll",
     "dev": "ts-node ./src",
@@ -48,6 +55,8 @@
     "@types/supertest": "^2.0.12",
     "jest": "^27.5.1",
     "nodemon": "^2.0.20",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^3.0.2",
     "supertest": "^6.3.3",
     "ts-jest": "^27.1.5",
     "ts-node": "^10.9.1",

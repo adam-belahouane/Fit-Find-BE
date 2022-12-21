@@ -148,7 +148,7 @@ usersRouter
       next(error);
     }
   })
-  .put(JWTAuthMiddleware, async (req: Request, res, next) => {
+  .put(JWTAuthMiddleware, async (req: any, res, next) => {
     try {
       const user = await UserModel.findByIdAndUpdate(req.user._id, {
         ...req.body,
