@@ -32,6 +32,7 @@ postsRouter.post(
   JWTAuthMiddlewarePro,
   async (req: any, res, next) => {
     try {
+      console.log(req)
       const newPost = await ProUserModel.findByIdAndUpdate(
         req.user._id,
         { $push: { posts: req.body } },

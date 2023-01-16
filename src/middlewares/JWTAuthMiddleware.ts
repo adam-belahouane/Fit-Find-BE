@@ -46,7 +46,7 @@ export const JWTAuthMiddlewarePro: RequestHandler = async (req: any, res, next) 
       const user = await ProUserModel.findById(decodedToken._id);
 
       if (user) {
-        // req.user = user;
+        req.user = user;
 
         next();
       } else {
