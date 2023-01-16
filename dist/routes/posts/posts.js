@@ -34,6 +34,7 @@ const cloudinaryStorage = new CloudinaryStorage({
 const postsRouter = express_1.default.Router();
 postsRouter.post("/newPosts", JWTAuthMiddleware_1.JWTAuthMiddlewarePro, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log(req);
         const newPost = yield professionalUser_1.ProUserModel.findByIdAndUpdate(req.user._id, { $push: { posts: req.body } }, { new: true });
         if (newPost) {
             res.status(201).send({ success: true, data: newPost });

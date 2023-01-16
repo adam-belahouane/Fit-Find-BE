@@ -81,6 +81,8 @@ proUsersRouter.route("/register").post((req, res) => __awaiter(void 0, void 0, v
         }
     }
     catch (error) {
+        if (error.code == 11000)
+            res.status(409).send({ success: false, error: "user with this email already exist" });
         res.status(400).send({ success: false, error: error });
     }
 }));

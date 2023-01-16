@@ -52,7 +52,7 @@ const JWTAuthMiddlewarePro = (req, res, next) => __awaiter(void 0, void 0, void 
             const decodedToken = yield (0, tools_1.verifyJWT)(token);
             const user = yield professionalUser_1.ProUserModel.findById(decodedToken._id);
             if (user) {
-                // req.user = user;
+                req.user = user;
                 next();
             }
             else {
